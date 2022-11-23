@@ -109,17 +109,22 @@ void Display::DisplayGrid(const std::vector<std::vector<std::string>> &grid,
                           bool border, bool insideSeparation) {
   size_t horizontalSize = grid[0].size() * 4;
 
-  std::cout << drawTopFrame(horizontalSize) << std::endl;
+  if (border) {
+    std::cout << drawTopFrame(horizontalSize) << std::endl;
+  }
   for (size_t y = 0; y < grid.size(); ++y) {
-    if (y != 0) {
-      std::cout << drawInBetween(horizontalSize) << std::endl;
-    }
-
     if (border) {
+      if (y != 0) {
+        std::cout << drawInBetween(horizontalSize) << std::endl;
+      }
       std::cout << VERTICAL_PIPE << ' ';
     }
     for (size_t x = 0; x < grid.at(0).size(); ++x) {
-      std::cout << grid.at(y).at(x);
+      if (!grid.at(y).at(x).empty()) {
+        std::cout << grid.at(y).at(x);
+      } else {
+        std::cout << " ";
+      }
       if (insideSeparation) {
         if (border && x != grid.at(0).size() - 1)
           std::cout << ' ' << VERTICAL_PIPE << ' ';
@@ -127,9 +132,14 @@ void Display::DisplayGrid(const std::vector<std::vector<std::string>> &grid,
           std::cout << ' ';
       }
     }
-    std::cout << VERTICAL_PIPE << std::endl;
+    if (border) {
+      std::cout << VERTICAL_PIPE;
+    }
+    std::cout << std::endl;
   }
-  std::cout << drawBottomFrame(horizontalSize) << std::endl;
+  if (border) {
+    std::cout << drawBottomFrame(horizontalSize) << std::endl;
+  }
 }
 
 std::string Display::setTextColor(std::string text, Display::Colors color) {
