@@ -2,15 +2,13 @@
 #include <limits>
 #include <string>
 
-template<typename T>
-T userInputRange(std::string msg, T min, T max, std::string err) {
-    T val;
-    while (true) {
-        val = userInput<T>(msg, err);
-        if (val >= min && val <= max) {
-            return val;
-        }
-        std::cout << err << std::endl;
+template <typename T>
+T userInputRange(const std::string &msg, T min, T max, const std::string &err) {
+  T val;
+  while (true) {
+    val = userInput<T>(msg, err);
+    if (val >= min && val <= max) {
+      return val;
     }
 }
 
