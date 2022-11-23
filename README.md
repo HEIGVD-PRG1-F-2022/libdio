@@ -15,7 +15,7 @@ And add `prg1f-io/src/display.cpp` to your `add_executable` in your `CmakeLists.
 Now you can use
 
 ```c++
-#include "prg1f-io/include/display.h'
+#include "prg1f-io/include/display.h"
 #include "prg1f-io/include/input.h"
 ```
 
