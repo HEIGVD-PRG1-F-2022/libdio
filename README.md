@@ -5,18 +5,20 @@ Input / Output library for the PRG1F course
 ## Usage
 
 Until we understand how to use `FetchContent` from CMakeFiles, you will have to do the following:
-In your working directory, make a clone of the library:
+In the parent directory of your project, make a clone of the library:
 
 ```bash
 git clone https://github.com/HEIGVD-PRG1-F-2022/prg1f-io
 ```
-
-And add `prg1f-io/src/display.cpp` to your `add_executable` in your `CmakeLists.txt`.
-Now you can use
+In your `CmakeLists.txt` add the next line.
+```
+include_directories(../prg1f-io/include)
+```
+Now you can use it like that:
 
 ```c++
-#include "prg1f-io/include/display.h'
-#include "prg1f-io/include/input.h"
+#include <display.h>
+#include <input.h>
 ```
 
 in your code.
