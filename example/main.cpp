@@ -1,34 +1,6 @@
-# prg1f-io
-
-Input / Output library for the PRG1F course
-
-## Usage
-
-Until we understand how to use `FetchContent` from CMakeFiles, you will have to do the following:
-In your working directory, make a clone of the library:
-
-```bash
-git clone https://github.com/HEIGVD-PRG1-F-2022/prg1f-io
-```
-
-And add `prg1f-io/src/display.cpp` to your `add_executable` in your `CmakeLists.txt`.
-Now you can use
-
-```c++
-#include "prg1f-io/include/display.h'
-#include "prg1f-io/include/input.h"
-```
-
-in your code.
-
-## Display
-
-### Examples
-
-```c++
+#include "../include/display.h"
+#include "../include/input.h"
 #include <thread>
-#include "prg1f-io/include/display.h"
-#include "prg1f-io/include/input.h"
 
 using namespace std;
 
@@ -75,12 +47,3 @@ int main() {
 
   return EXIT_SUCCESS;
 }
-```
-
-### Images
-
-(Les images ont été prises durant la beta et ne sont pas représentatives du produit final)
-
-![image](https://user-images.githubusercontent.com/46396184/202451747-80dc852e-b7df-4511-9a0b-6907789343b7.png)
-
-![image](https://user-images.githubusercontent.com/46396184/202451486-d65ad651-b26e-4ddf-8b79-2c10e40fdb47.png)

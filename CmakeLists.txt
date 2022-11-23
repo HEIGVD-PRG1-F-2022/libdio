@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.23)
+project(prg1f-io VERSION 0.1 DESCRIPTION "Input and display methods for PRG1-F")
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+
+add_library(prg1f-io STATIC src/display.cpp)
+set_target_properties(prg1f-io PROPERTIES VERSION ${PROJECT_VERSION})
+set_target_properties(prg1f-io PROPERTIES PUBLIC_HEADER include/display.h)
+
+include(GNUInstallDirs)
+install(TARGETS prg1f-io
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
