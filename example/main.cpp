@@ -26,7 +26,7 @@ int main() {
   this_thread::sleep_for(1000ms);
 
   vector<vector<string>> grid(6, vector<string>(6, "0"));
-  display.DisplayGrid(grid);
+  display.DisplayGrid(grid, false);
   this_thread::sleep_for(1000ms);
 
   for (auto &row : grid) {
