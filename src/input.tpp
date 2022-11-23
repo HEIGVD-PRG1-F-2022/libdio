@@ -4,10 +4,14 @@
 
 template <typename T>
 T userInputRange(std::string msg, T min, T max, std::string err) {
-  T val = userInput<T>(msg, err);
-  val = std::clamp(val, min, max);
-
-  return val;
+  T val;
+  while (true) {
+    val = userInput<T>(msg, err);
+    if (val >= min && val <= max) {
+      return val;
+    }
+    std::cout << err << std::endl;
+  }
 }
 
 template <typename T>
