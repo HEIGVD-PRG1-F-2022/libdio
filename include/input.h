@@ -8,7 +8,7 @@
  * @param msg message to display to the user
  * @param err error message in case of wrong type
  */
-template <typename T>
+template<typename T>
 T userInput(const std::string &msg,
             const std::string &err = "Wrong type, please retry");
 
@@ -20,7 +20,7 @@ T userInput(const std::string &msg,
  * @param max maximum value, inclusive
  * @param err error message in case of wrong type
  */
-template <typename T>
+template<typename T>
 T userInputRange(std::string msg, T min, T max,
                  std::string err = "Wrong type, please retry");
 
