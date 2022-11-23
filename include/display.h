@@ -10,18 +10,23 @@
 
 class Display {
 
+private:
     const std::string TOP_LEFT_PIPE = "╔";
     const std::string TOP_RIGHT_PIPE = "╗";
     const std::string HORIZONTAL_PIPE = "═";
+    const std::string HORIZONTAL_UP_PIPE = "╩";
+    const std::string HORIZONTAL_DOWN_PIPE = "╩";
     const std::string VERTICAL_PIPE = "║";
+    const std::string VERTICAL_LEFT_PIPE = "╣";
+    const std::string VERTICAL_RIGHT_PIPE = "╠";
     const std::string BOT_LEFT_PIPE = "╚";
     const std::string BOT_RIGHT_PIPE = "╝";
+    const std::string CROSS_PIPE = "╬";
 
     std::string prefix;
     std::string suffix;
     std::string content;
 
-private:
     std::string drawInBetween(size_t sizeHorizontal);
 
     std::string drawTopFrame(size_t sizeHorizontal);
