@@ -33,8 +33,11 @@ private:
 public:
     enum Colors {
         WHITE = 15,
-        PINK = 207,
+        YELLOW = 226,
+        ORANGE = 214,
         RED = 196,
+        AQUA = 122,
+        PINK = 207,
         GREEN = 40,
         BLUE = 21,
         BLACK = 16
