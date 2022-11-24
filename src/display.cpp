@@ -66,14 +66,14 @@ void Display::clear() {
 
 std::string Display::drawInBetween(size_t sizeHorizontal) {
     std::string line;
-    line.append("╠");
+    line.append(VERTICAL_RIGHT_PIPE);
     for (size_t i = 1; i < sizeHorizontal; ++i) {
         if (i % 4 != 0)
             line.append(HORIZONTAL_PIPE);
         else
             line.append("╬");
     }
-    line.append("╣");
+    line.append(VERTICAL_LEFT_PIPE);
     return line;
 }
 
@@ -85,7 +85,7 @@ std::string Display::drawTopFrame(size_t sizeHorizontal) {
         if (i % 4 != 0)
             line.append(HORIZONTAL_PIPE);
         else
-            line.append("╦");
+            line.append(HORIZONTAL_DOWN_PIPE);
     }
     line.append(TOP_RIGHT_PIPE);
     return line;
@@ -99,7 +99,7 @@ std::string Display::drawBottomFrame(size_t sizeHorizontal) {
         if (i % 4 != 0)
             line.append(HORIZONTAL_PIPE);
         else
-            line.append("╩");
+            line.append(HORIZONTAL_UP_PIPE);
     }
     line.append(BOT_RIGHT_PIPE);
     return line;
