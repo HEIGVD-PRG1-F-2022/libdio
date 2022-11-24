@@ -21,7 +21,7 @@ T userInput(const std::string &msg,
  * @param err error message in case of wrong type
  */
 template<typename T>
-T userInputRange(const std::string &msg, T min, T max,
+T userInputRange(const std::string &msg, T min, T max, const std::string &bad_range,
                  const std::string &err = "Wrong type, please retry");
 
 #include "../src/input.tpp"
