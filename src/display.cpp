@@ -19,8 +19,7 @@
 
 void Display::setTerminalUtf8() {
 #ifdef _WIN32
-    system(("chcp " + std::to_string(CP_UTF8))
-                   .c_str());// Set terminal to utf-8 with support of colors
+    SetConsoleOutputCP(CP_UTF8);
 #endif
 }
 
