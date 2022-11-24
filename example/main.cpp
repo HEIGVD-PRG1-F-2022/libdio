@@ -1,6 +1,5 @@
-#include "../include/display.h"
-#include "../include/input.h"
-#include <thread>
+#include <libdio/display.h>
+#include <libdio/input.h>
 
 using namespace std;
 
@@ -8,26 +7,21 @@ int main() {
     Display display(Display::Colors::PINK);
 
     Display::showText("Test", Display::Colors::GREEN);
-    this_thread::sleep_for(1000ms);
 
-    display.saveCursorPosition();
-    display.setContent("Hello World!\nteste");
+    Display::saveCursorPosition();
+    display.setContent("Hello World!\nNext line");
     display.show();
-    this_thread::sleep_for(1000ms);
 
-    display.goBackToCursorPosition();
+    Display::goBackToCursorPosition();
     display.setTextColor(Display::Colors::BLUE);
-    display.setContent("bouh");
+    display.setContent("This is blue");
     display.show();
-    this_thread::sleep_for(1000ms);
 
     display.clear();
-    display.show("MAMA");
-    this_thread::sleep_for(1000ms);
+    display.show("HAL 2000");
 
     vector<vector<string>> grid(6, vector<string>(6, "0"));
     display.DisplayGrid(grid, false);
-    this_thread::sleep_for(1000ms);
 
     for (auto &row: grid) {
         for (auto &item: row) {
@@ -35,15 +29,13 @@ int main() {
         }
     }
     display.DisplayGrid(grid);
-    this_thread::sleep_for(1000ms);
 
-    int age = userInputRange<int>("Quel age as-tu ?", 0, 200, "Mauvais entrée");
+    int age = userInputRange<int>("How old are you?", 0, 200, "Bad entry");
 
-    string tmp = "Vous avez " +
+    string tmp = "You are " +
                  Display::setTextColor(to_string(age), Display::Colors::RED) +
-                 " ans";
+                 " years old";
     Display::showText(tmp);
-    this_thread::sleep_for(1000ms);
 
     return EXIT_SUCCESS;
 }

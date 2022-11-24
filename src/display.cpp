@@ -15,7 +15,7 @@
 
 #endif
 
-#include "../include/display.h"
+#include "libdio/display.h"
 
 void Display::setTerminalUtf8() {
 #ifdef _WIN32
