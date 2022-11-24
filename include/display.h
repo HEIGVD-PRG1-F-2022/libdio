@@ -15,7 +15,7 @@ private:
     const std::string TOP_RIGHT_PIPE = "╗";
     const std::string HORIZONTAL_PIPE = "═";
     const std::string HORIZONTAL_UP_PIPE = "╩";
-    const std::string HORIZONTAL_DOWN_PIPE = "╩";
+    const std::string HORIZONTAL_DOWN_PIPE = "╦";
     const std::string VERTICAL_PIPE = "║";
     const std::string VERTICAL_LEFT_PIPE = "╣";
     const std::string VERTICAL_RIGHT_PIPE = "╠";
