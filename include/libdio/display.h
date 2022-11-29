@@ -2,8 +2,8 @@
 // - Florian Duruz
 // - Aellen Quentin
 
-#ifndef PRG1F_IO_DISPLAY_H
-#define PRG1F_IO_DISPLAY_H
+#ifndef LIBDIO_DISPLAY_H
+#define LIBDIO_DISPLAY_H
 
 #include <string>
 #include <vector>
@@ -72,4 +72,4 @@ public:
                      bool border = true, bool insideSeparation = true);
 };
 
-#endif// PRG1F_IO_DISPLAY_H
+#endif// LIBDIO_DISPLAY_H

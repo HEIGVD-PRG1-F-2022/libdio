@@ -1,5 +1,5 @@
-#ifndef PRG1F_IO_INPUT_H
-#define PRG1F_IO_INPUT_H
+#ifndef LIBDIO_INPUT_H
+#define LIBDIO_INPUT_H
 
 #include <string>
 
@@ -24,6 +24,6 @@ template<typename T>
 T userInputRange(const std::string &msg, T min, T max, const std::string &bad_range,
                  const std::string &err = "Wrong type, please retry");
 
-#include "../src/input.tpp"
+#include "../../src/input.tpp"
 
 #endif

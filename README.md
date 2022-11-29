@@ -1,83 +1,38 @@
-# prg1f-io
+# libdio
 
 Input / Output library for the PRG1F course
 
 ## Usage
 
-Until we understand how to use `FetchContent` from CMakeFiles, you will have to do the following:
-In your working directory, make a clone of the library:
+To use this library in your code, you have to add the following lines in your project:
 
-```bash
-git clone https://github.com/HEIGVD-PRG1-F-2022/prg1f-io
+```cmake
+include(FetchContent) # once in the project to include the module
+
+FetchContent_Declare(libdio
+        GIT_REPOSITORY https://github.com/HEIGVD-PRG1-F-2022/libdio.git
+        GIT_TAG v0.1.9
+        )
+FetchContent_MakeAvailable(libdio)
+
+# Here are your other declarations, like `add_executable`
+
+# Replace `PROJECT` with the name of your executable
+target_link_libraries(PROJECT PRIVATE libdio)
 ```
 
-And add `prg1f-io/src/display.cpp` to your `add_executable` in your `CmakeLists.txt`.
-Now you can use
+Now you can do the following to include the library in your files:
 
 ```c++
-#include "prg1f-io/include/display.h"
-#include "prg1f-io/include/input.h"
+#include <libdio/display.h>
+#include <libdio/input.h>
 ```
 
-in your code.
+## Examples
 
-## Display
+There is an example here: [example](example/main.cpp).
 
-### Examples
-
-```c++
-#include <thread>
-#include "prg1f-io/include/display.h"
-#include "prg1f-io/include/input.h"
-
-using namespace std;
-
-int main() {
-  Display display(Display::Colors::PINK);
-
-  Display::showText("Test", Display::Colors::GREEN);
-  this_thread::sleep_for(1000ms);
-
-  display.saveCursorPosition();
-  display.setContent("Hello World!\nteste");
-  display.show();
-  this_thread::sleep_for(1000ms);
-
-  display.goBackToCursorPosition();
-  display.setTextColor(Display::Colors::BLUE);
-  display.setContent("bouh");
-  display.show();
-  this_thread::sleep_for(1000ms);
-
-  display.clear();
-  display.show("MAMA");
-  this_thread::sleep_for(1000ms);
-
-  vector<vector<string>> grid(6, vector<string>(6, "0"));
-  display.DisplayGrid(grid);
-  this_thread::sleep_for(1000ms);
-
-  for (auto &row : grid) {
-    for (auto &item : row) {
-      item = Display::setTextColor("a", Display::Colors::PINK);
-    }
-  }
-  display.DisplayGrid(grid);
-  this_thread::sleep_for(1000ms);
-
-  int age = userInputRange<int>("Quel age as-tu ?", 0, 200, "Mauvais entrée");
-
-  string tmp = "Vous avez " +
-               Display::setTextColor(to_string(age), Display::Colors::RED) +
-               " ans";
-  Display::showText(tmp);
-  this_thread::sleep_for(1000ms);
-
-  return EXIT_SUCCESS;
-}
-```
-
-### Images
+## Images
 
 (Les images ont été prises durant la beta et ne sont pas représentatives du produit final)
 
