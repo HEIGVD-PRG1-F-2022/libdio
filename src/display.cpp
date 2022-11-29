@@ -4,21 +4,35 @@
 
 #include <iostream>
 #include <utility>
+#include <stdlib.h>
 
 #ifdef _WIN32
 
 #include <windows.h>
 
-#elif __unix__
+int enableVirtualTerminalProcessing() {
 
-#include <stdlib.h>
+  HANDLE stdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 
+  if (stdOut != INVALID_HANDLE_VALUE) {
+    DWORD mode = 0;
+    if (GetConsoleMode(stdOut, &mode)) {
+      mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+      if (SetConsoleMode(stdOut, mode)) {
+        return 0;
+      }
+    }
+  }
+
+  return GetLastError();
+}
 #endif
 
 #include "../include/display.h"
 
 void Display::setTerminalUtf8() {
 #ifdef _WIN32
+    enableVirtualTerminalProcessing();
     SetConsoleOutputCP(CP_UTF8);
 #endif
 }
