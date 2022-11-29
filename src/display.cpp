@@ -12,20 +12,21 @@
 
 int enableVirtualTerminalProcessing() {
 
-  HANDLE stdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    HANDLE stdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 
-  if (stdOut != INVALID_HANDLE_VALUE) {
-    DWORD mode = 0;
-    if (GetConsoleMode(stdOut, &mode)) {
-      mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-      if (SetConsoleMode(stdOut, mode)) {
-        return 0;
-      }
+    if (stdOut != INVALID_HANDLE_VALUE) {
+        DWORD mode = 0;
+        if (GetConsoleMode(stdOut, &mode)) {
+            mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+            if (SetConsoleMode(stdOut, mode)) {
+                return 0;
+            }
+        }
     }
-  }
 
-  return GetLastError();
+    return GetLastError();
 }
+
 #endif
 
 #include "../include/display.h"
