@@ -4,14 +4,14 @@ Input / Output library for the PRG1F course
 
 ## Usage
 
-To use this library in your code, you have to add the following lines in your project:
+To use this library in your code, you have to add the following lines in your `CMakeLists.txt`:
 
 ```cmake
 include(FetchContent) # once in the project to include the module
 
 FetchContent_Declare(libdio
         GIT_REPOSITORY https://github.com/HEIGVD-PRG1-F-2022/libdio.git
-        GIT_TAG v0.1.9
+        GIT_TAG v0.1.10
         )
 FetchContent_MakeAvailable(libdio)
 
