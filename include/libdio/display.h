@@ -7,36 +7,11 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
 
-class Display {
+namespace Display {
 
-private:
-    const std::string TOP_LEFT_PIPE = "╔";
-    const std::string TOP_RIGHT_PIPE = "╗";
-    const std::string HORIZONTAL_PIPE = "═";
-    const std::string HORIZONTAL_UP_PIPE = "╩";
-    const std::string HORIZONTAL_DOWN_PIPE = "╦";
-    const std::string VERTICAL_PIPE = "║";
-    const std::string VERTICAL_LEFT_PIPE = "╣";
-    const std::string VERTICAL_RIGHT_PIPE = "╠";
-    const std::string BOT_LEFT_PIPE = "╚";
-    const std::string BOT_RIGHT_PIPE = "╝";
-    const std::string CROSS_PIPE = "╬";
-
-    std::string prefix;
-    std::string suffix;
-    std::string content;
-
-    std::string drawInBetween(size_t sizeHorizontal);
-
-    std::string drawTopFrame(size_t sizeHorizontal);
-
-    std::string drawBottomFrame(size_t sizeHorizontal);
-
-    static void setTerminalUtf8();
-
-public:
-    enum Colors {
+    enum class Color {
         WHITE = 15,
         YELLOW = 226,
         ORANGE = 214,
@@ -48,28 +23,62 @@ public:
         BLACK = 16
     };
 
-    explicit Display(Colors defaultTextColor = Colors::WHITE);
+    // DString represents a colored string. Upon creation, it is initialised with
+    // a white text color.
+    class DString {
+        std::string out;
+        friend std::ostream& operator<<(std::ostream& os, const DString& obj);
 
-    void setTextColor(Colors color);
+    public:
+        explicit DString(Color c = Color::WHITE);
+        DString& setColor(Color color);
 
-    static std::string setTextColor(std::string text, Colors color);
+        DString& operator+=(const DString &ds);
+        friend DString operator+(DString left, const DString &right);
+        DString& operator+=(const std::string &ds);
+        friend DString operator+(DString left, const std::string &right);
 
-    static void saveCursorPosition();
+        DString& operator<<(const DString& obj);
+        DString& operator<<(const std::string& obj);
+        DString& operator<<(const char obj[]);
+        DString& operator<<(const Color& col);
+        template<typename T>
+        DString& operator<<(T obj);
 
-    static void goBackToCursorPosition();
+        // Prints the string and clears DString.
+        void print();
 
-    void show();
+        // Resets the string.
+        void reset(Color color = Color::WHITE);
 
-    void show(std::string text);
+        DString& saveCursorPosition();
+        DString& goBackToCursorPosition();
+        DString& clearScreen();
 
-    static void showText(std::string text, Colors color = Colors::WHITE);
+        // Returns the maximum line-length of this string.
+        size_t max_width();
+        // Returns the number of lines in this string
+        size_t count_lines();
+    };
 
-    void setContent(std::string string);
+    std::vector<std::string> split(std::string s, std::string sep, size_t max_sep = 0);
 
-    void clear();
+    void init();
+    void saveCursorPosition();
+    void restoreCursorPosition();
+    void clearScreen();
+    void systemClearScreen();
 
-    void DisplayGrid(const std::vector<std::vector<std::string>> &grid,
-                     bool border = true, bool insideSeparation = true);
-};
+    template<typename T>
+    DString displayGrid(const std::vector<std::vector<T>> &grid, bool show_grid = true);
+    template<>
+    DString displayGrid<std::string>(const std::vector<std::vector<std::string>> &grid, bool show_grid);
+    template<>
+    DString displayGrid<DString>(const std::vector<std::vector<DString>> &grid, bool show_grid);
+    template<typename T>
+    DString displayGrid(const std::vector<std::vector<T>> &grid, std::function<DString(T)> convert, bool show_grid = true);
+}
+
+#include "display.tpp"
 
 #endif// LIBDIO_DISPLAY_H

@@ -1,41 +1,48 @@
+#include <functional>
 #include <libdio/display.h>
 #include <libdio/input.h>
+#include <thread>
+#include <vector>
 
 using namespace std;
 
 int main() {
-    Display display(Display::Colors::PINK);
+    Display::init();
 
-    Display::showText("Test", Display::Colors::GREEN);
+    Display::DString display(Display::Color::PINK);
+    display += "Test\n";
+    display.print();
+
+    display.setColor(Display::Color::GREEN) += "In green\n";
+    display.print();
 
     Display::saveCursorPosition();
-    display.setContent("Hello World!\nNext line");
-    display.show();
+    display += "Hello World!\nNext line\n";
+    display.print();
 
-    Display::goBackToCursorPosition();
-    display.setTextColor(Display::Colors::BLUE);
-    display.setContent("This is blue");
-    display.show();
+    this_thread::sleep_for(1000ms);
 
-    display.clear();
-    display.show("HAL 2000");
+    Display::restoreCursorPosition();
+    display.setColor(Display::Color::RED);
+    display += "This is red\n";
+    display.print();
 
-    vector<vector<string>> grid(6, vector<string>(6, "0"));
-    display.DisplayGrid(grid, false);
+    display.clearScreen();
+    display << "HAL 2000\n";
+    cout << display;
 
-    for (auto &row: grid) {
-        for (auto &item: row) {
-            item = Display::setTextColor("a", Display::Colors::PINK);
-        }
-    }
-    display.DisplayGrid(grid);
+    vector<vector<string>> grid(3, vector<string>(3, "0"));
+    cout << Display::displayGrid(grid, false);
+
+    grid.at(1).at(1) = "11";
+    Display::displayGrid(grid, function<Display::DString(string)>([](string s) -> Display::DString {
+                             return Display::DString(s == "11" ? Display::Color::GREEN : Display::Color::RED) << s;
+                         }))
+            .print();
 
     int age = userInputRange<int>("How old are you?", 0, 200, "Bad entry");
 
-    string tmp = "You are " +
-                 Display::setTextColor(to_string(age), Display::Colors::RED) +
-                 " years old";
-    Display::showText(tmp);
+    cout << (Display::DString() << "You are " << Display::Color::RED << age << Display::Color::WHITE << " years old\n");
 
     return EXIT_SUCCESS;
 }
