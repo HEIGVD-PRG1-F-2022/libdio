@@ -5,9 +5,9 @@
 #ifndef LIBDIO_DISPLAY_H
 #define LIBDIO_DISPLAY_H
 
+#include <iostream>
 #include <string>
 #include <vector>
-#include <iostream>
 
 namespace Display {
 
@@ -25,25 +25,17 @@ namespace Display {
 
     // DString represents a colored string. Upon creation, it is initialised with
     // a white text color.
-    class DString {
-        std::string out;
-        friend std::ostream& operator<<(std::ostream& os, const DString& obj);
-
+    class DString : public std::string {
     public:
         explicit DString(Color c = Color::WHITE);
-        DString& setColor(Color color);
+        DString &setColor(Color color);
 
-        DString& operator+=(const DString &ds);
-        friend DString operator+(DString left, const DString &right);
-        DString& operator+=(const std::string &ds);
-        friend DString operator+(DString left, const std::string &right);
-
-        DString& operator<<(const DString& obj);
-        DString& operator<<(const std::string& obj);
-        DString& operator<<(const char obj[]);
-        DString& operator<<(const Color& col);
+        DString &operator<<(const DString &obj);
+        DString &operator<<(const std::string &obj);
+        DString &operator<<(const char obj[]);
+        DString &operator<<(const Color &col);
         template<typename T>
-        DString& operator<<(T obj);
+        DString &operator<<(T obj);
 
         // Prints the string and clears DString.
         void print();
@@ -51,17 +43,15 @@ namespace Display {
         // Resets the string.
         void reset(Color color = Color::WHITE);
 
-        DString& saveCursorPosition();
-        DString& goBackToCursorPosition();
-        DString& clearScreen();
+        DString &saveCursorPosition();
+        DString &goBackToCursorPosition();
+        DString &clearScreen();
 
         // Returns the maximum line-length of this string.
         size_t max_width();
         // Returns the number of lines in this string
         size_t count_lines();
     };
-
-    std::vector<std::string> split(std::string s, std::string sep, size_t max_sep = 0);
 
     void init();
     void saveCursorPosition();
@@ -77,7 +67,7 @@ namespace Display {
     DString displayGrid<DString>(const std::vector<std::vector<DString>> &grid, bool show_grid);
     template<typename T>
     DString displayGrid(const std::vector<std::vector<T>> &grid, std::function<DString(T)> convert, bool show_grid = true);
-}
+}// namespace Display
 
 #include "display.tpp"
 

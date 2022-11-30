@@ -1,13 +1,13 @@
 #include "display.h"
-#include <vector>
 #include <functional>
+#include <vector>
 
 namespace Display {
     using namespace std;
 
     template<typename T>
     DString &DString::operator<<(T obj) {
-        out += to_string(obj);
+        *this += to_string(obj);
         return *this;
     }
 

@@ -48,41 +48,26 @@ const string CROSS_PIPE = "╬";
 namespace Display {
 
     string nonANSI(const string &s);
+    vector<string> split(const string &s, const string &sep);
 
     DString::DString(Display::Color c) {
         setColor(c);
     }
     DString &DString::setColor(Color color) {
-        out += "\x1b[38;5;" + to_string(int(color)) + "m";
+        *this += "\x1b[38;5;" + to_string(int(color)) + "m";
         return *this;
-    }
-
-    DString &DString::operator+=(const DString &ds) {
-        out += ds.out;
-        return *this;
-    }
-    DString operator+(DString left, const DString &right) {
-        return left += right;
-    }
-
-    DString &DString::operator+=(const string &s) {
-        out += s;
-        return *this;
-    }
-    DString operator+(DString left, const string &right) {
-        return left += right;
     }
 
     DString &DString::operator<<(const DString &obj) {
-        out += obj.out;
+        *this += obj;
         return *this;
     }
     DString &DString::operator<<(const std::string &obj) {
-        out += obj;
+        *this += obj;
         return *this;
     }
     DString &DString::operator<<(const char obj[]) {
-        out += obj;
+        *this += obj;
         return *this;
     }
     DString &DString::operator<<(const Color &col) {
@@ -91,51 +76,45 @@ namespace Display {
     }
 
     void DString::print() {
-        cout << out;
+        cout << *this;
         reset();
     }
 
     void DString::reset(Color color) {
-        out = "";
+        clear();
         setColor(color);
     }
 
     DString &DString::saveCursorPosition() {
-        out += "\x1b[s";
+        *this += "\x1b[s";
         return *this;
     }
     DString &DString::goBackToCursorPosition() {
-        out += "\x1b[u";
+        *this += "\x1b[u";
         return *this;
     }
     DString &DString::clearScreen() {
-        out += "\x1b[2J\x1b[H";
+        *this += "\x1b[2J\x1b[H";
         return *this;
     }
 
     size_t DString::max_width() {
         size_t max_width = 0;
-        for (auto line: split(out, "\n")) {
+        for (const auto &line: split(*this, "\n")) {
             max_width = max(max_width, nonANSI(line).size());
         }
         return max_width;
     }
 
     size_t DString::count_lines() {
-        return size_t(std::count_if(out.begin(), out.end(), [](char c) -> bool { return c == '\n'; }));
+        return size_t(std::count_if(begin(), end(), [](char c) -> bool { return c == '\n'; }));
     }
 
-    ostream &operator<<(ostream &os, const DString &obj) {
-        os << obj.out;
-        return os;
-    }
-
-    vector<string> split(string s, string sep, size_t max_sep) {
+    vector<string> split(const string &s, const string &sep) {
         vector<string> ret;
         size_t last = 0;
         size_t next = 0;
-        while ((next = s.find(sep, last)) != string::npos &&
-               (ret.size() < max_sep || max_sep == 0)) {
+        while ((next = s.find(sep, last)) != string::npos) {
             ret.push_back(s.substr(last, next - last));
             last = next + 1;
         }
