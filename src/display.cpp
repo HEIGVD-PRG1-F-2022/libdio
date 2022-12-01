@@ -2,6 +2,7 @@
 // - Florian Duruz
 // - Aellen Quentin
 
+#include <cstdlib>
 #include <iostream>
 #include <regex>
 #include <utility>
@@ -50,6 +51,10 @@ namespace Display {
     string nonANSI(const string &s);
     vector<string> split(const string &s, const string &sep);
 
+    DString::DString(const std::string &s) {
+        this->assign(s);
+    }
+
     DString::DString(Display::Color c) {
         setColor(c);
     }
@@ -75,22 +80,38 @@ namespace Display {
         return *this;
     }
 
-    void DString::print() {
+    DString &DString::print() {
         cout << *this;
         reset();
+        return *this;
     }
 
-    void DString::reset(Color color) {
+    DString &DString::reset(Color color) {
         clear();
         setColor(color);
+        return *this;
     }
 
     DString &DString::saveCursorPosition() {
+        // While the first is the official ANSI code for saving the cursor position,
+        // the latter works in most unix terminals, but not MacOS.
+#ifdef __WIN32__
         *this += "\x1b[s";
+#elifdef __linux__
+        *this += "\x1b"
+                 "7";
+#endif
         return *this;
     }
     DString &DString::goBackToCursorPosition() {
+// While the first is the official ANSI code for saving the cursor position,
+// the latter works in most unix terminals, but not MacOS.
+#ifdef __WIN32__
         *this += "\x1b[u";
+#elifdef __linux__
+        *this += "\x1b"
+                 "8";
+#endif
         return *this;
     }
     DString &DString::clearScreen() {
@@ -152,8 +173,8 @@ namespace Display {
         DString().clearScreen().print();
     }
 
-    string drawFrame(string first, string middle, string last, string space, size_t cells, size_t width) {
-        string line = first;
+    string drawFrame(string first, const string &middle, const string &last, const string &space, size_t cells, size_t width) {
+        string line = move(first);
         string spaces;
         for (size_t i = 0; i <= width + 1; i++) {
             spaces += space;
@@ -228,7 +249,7 @@ namespace Display {
 
     template<>
     DString displayGrid<string>(const vector<vector<string>> &grid, bool show_grid) {
-        return displayGrid<string>(
+        return displayGridConvert<string>(
                 grid, [](const string &val) -> DString { return DString() << val; }, show_grid);
     }
 }// namespace Display

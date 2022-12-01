@@ -8,5 +8,5 @@ add_library(libdio STATIC src/display.cpp)
 set_target_properties(libdio PROPERTIES VERSION ${PROJECT_VERSION})
 target_include_directories(libdio PUBLIC include)
 
-add_executable(example example/main.cpp)
-target_link_libraries(example libdio)
+add_executable(libdio_example example/main.cpp)
+target_link_libraries(libdio_example libdio)

@@ -10,6 +10,8 @@ int main() {
     Display::init();
 
     Display::DString display(Display::Color::PINK);
+    Display::systemClearScreen();
+    display.clearScreen();
     display << "Test\n";
     display.print();
 
@@ -24,10 +26,9 @@ int main() {
 
     Display::restoreCursorPosition();
     display.setColor(Display::Color::RED);
-    display << "This is red\n";
+    display << "Goodbye world!\nThis is red\n";
     display.print();
 
-    display.clearScreen();
     display << "HAL 2000\n";
     cout << display;
 
@@ -35,10 +36,9 @@ int main() {
     cout << Display::displayGrid(grid, false);
 
     grid.at(1).at(1) = "11";
-    Display::displayGrid(grid, function<Display::DString(string)>([](const string &s) -> Display::DString {
-                             return Display::DString(s == "11" ? Display::Color::GREEN : Display::Color::RED) << s;
-                         }))
-            .print();
+    Display::displayGridConvert<string>(grid, [](const string &s) -> Display::DString {
+        return Display::DString(s == "11" ? Display::Color::GREEN : Display::Color::RED) << s;
+    }).print();
 
     int age = userInputRange<int>("How old are you?", 0, 200, "Bad entry");
 
