@@ -1,6 +1,6 @@
 # libdio
 
-Input / Output library for the PRG1F course
+Input / Output library for the PRG1F course. Smart abstractions to ask for user inputs, and display things to the console (colors, display grid).
 
 ## Usage
 
@@ -28,9 +28,42 @@ Now you can do the following to include the library in your files:
 #include <libdio/input.h>
 ```
 
-## Examples
+## Features
+See a code example [here](example/main.cpp).
 
-There is an example here: [example](example/main.cpp).
+### Display text and colors
+The Display class can be used with or without an object.
+
+**Support of colors**
+libdio supports ANSI colors, and a few common colors are included. Here is the full list and their ANSI codes
+```cpp
+enum Colors {
+	WHITE = 15,
+	YELLOW = 226,
+	ORANGE = 214,
+	RED = 196,
+	AQUA = 122,
+	PINK = 207,
+	GREEN = 40,
+	BLUE = 21,
+	BLACK = 16
+};
+```
+And a visual test of these colors:
+![colors.png](imgs/colors.png)
+
+But you can cast any integer value of an ANSI color to get a custom color that is not listed above. For example with the color 148:
+```cpp
+Display::showText(msg, (Display::Colors) 148);
+```
+![custom-colors.png](imgs/custom-colors.png)
+
+All the following ANSI codes can be used!
+![8bits-colors-wikipedia.png](imgs/8bits-colors-wikipedia.png)
+*Source: [8 bit ANSI codes on Wikipedia](https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit)*
+
+
+### Display grids
 
 ## Images
 
