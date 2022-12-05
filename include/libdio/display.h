@@ -5,6 +5,7 @@
 #ifndef LIBDIO_DISPLAY_H
 #define LIBDIO_DISPLAY_H
 
+#include <functional>
 #include <iostream>
 #include <string>
 #include <vector>
