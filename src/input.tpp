@@ -3,7 +3,7 @@
 #include <string>
 
 template<typename T>
-T userInputRange(const std::string &msg, T min, T max,const std::string &bad_range, const std::string &err) {
+T userInputRange(const std::string &msg, T min, T max, const std::string &bad_range, const std::string &err) {
     T val;
     while (true) {
         val = userInput<T>(msg, err);
