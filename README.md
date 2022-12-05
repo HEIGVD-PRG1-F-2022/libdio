@@ -11,7 +11,7 @@ include(FetchContent) # once in the project to include the module
 
 FetchContent_Declare(libdio
         GIT_REPOSITORY https://github.com/HEIGVD-PRG1-F-2022/libdio.git
-        GIT_TAG v0.1.10
+        GIT_TAG v0.2.0
         )
 FetchContent_MakeAvailable(libdio)
 
@@ -218,6 +218,23 @@ template<typename T>
 T userInputRange(const std::string &msg, T min, T max, const std::string &bad_range,
                  const std::string &err = "Wrong type, please retry");
 ```
+
+## Develop libdio locally
+
+If you want to change how `libdio` works in your local directory, you can do the following:
+
+1. Clone the libdio repo locally
+2. Change the code for `CMakeLists.txt` to the following:
+
+```cmake
+add_subdirectory(libdio)
+# Here are your other declarations, like `add_executable`
+
+# Replace `PROJECT` with the name of your executable
+target_link_libraries(PROJECT PRIVATE libdio)
+```
+
+Please don't forget to create a pull-request with your changes!
 
 ## Images
 
