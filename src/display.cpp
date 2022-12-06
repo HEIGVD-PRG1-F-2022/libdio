@@ -48,7 +48,10 @@ const string CROSS_PIPE = "╬";
 
 namespace Display {
 
+    // Removes all ANSI sequences for counting characters.
     string nonANSI(const string &s);
+
+    // Splits a string along the 'sep' string in as many pieces as possible.
     vector<string> split(const string &s, const string &sep);
 
     DString::DString(const std::string &s) {
@@ -58,6 +61,7 @@ namespace Display {
     DString::DString(Display::Color c) {
         setColor(c);
     }
+
     DString &DString::setColor(Color color) {
         *this += "\x1b[38;5;" + to_string(int(color)) + "m";
         return *this;
@@ -103,6 +107,7 @@ namespace Display {
 #endif
         return *this;
     }
+
     DString &DString::goBackToCursorPosition() {
 // While the first is the official ANSI code for saving the cursor position,
 // the latter works in most unix terminals, but not MacOS.
@@ -114,6 +119,7 @@ namespace Display {
 #endif
         return *this;
     }
+
     DString &DString::clearScreen() {
         *this += "\x1b[2J\x1b[H";
         return *this;
@@ -166,9 +172,11 @@ namespace Display {
     void saveCursorPosition() {
         DString().saveCursorPosition().print();
     }
+
     void restoreCursorPosition() {
         DString().goBackToCursorPosition().print();
     }
+
     void clearScreen() {
         DString().clearScreen().print();
     }

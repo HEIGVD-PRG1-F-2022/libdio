@@ -42,11 +42,13 @@ namespace Display {
     class DString : public std::string {
     public:
         explicit DString(const std::string &s);
+
         /**
          * Instantiate a new DString.
          * @param c the color of the string.
          */
         explicit DString(Color c = Color::WHITE);
+
         /**
          * Sets the color for all following text.
          * @param color for all upcoming text.
@@ -59,21 +61,25 @@ namespace Display {
          * @return a reference to DString
          */
         DString &operator<<(const DString &obj);
+
         /**
          * Use DString as a stream
          * @return a reference to DString
          */
         DString &operator<<(const std::string &obj);
+
         /**
          * Use DString as a stream
          * @return a reference to DString
          */
         DString &operator<<(const char obj[]);
+
         /**
          * Use DString as a stream
          * @return a reference to DString
          */
         DString &operator<<(const Color &col);
+
         /**
          * Use DString as a stream
          * @return a reference to DString
@@ -99,11 +105,13 @@ namespace Display {
          * @return a reference to the DString for chaining.
          */
         DString &saveCursorPosition();
+
         /**
          * Restores the previously saved cursor position.
          * @return a reference to the DString for chaining.
          */
         DString &goBackToCursorPosition();
+
         /**
          * Adds a clear string command.
          * @return a reference to the DString for chaining.
@@ -115,6 +123,7 @@ namespace Display {
          * @return the longest line of this string without the ANSI codes
          */
         size_t max_width();
+
         /**
          * Returns the number of lines in this string
          * @return number of lines
@@ -127,18 +136,22 @@ namespace Display {
      * But for cross-compatibility it should be called anyway.
      */
     void init();
+
     /**
      * Saves the current cursor position.
      */
     void saveCursorPosition();
+
     /**
      * Restores a previously saved cursor position.
      */
     void restoreCursorPosition();
+
     /**
      * Clears the screen using ANSI codes.
      */
     void clearScreen();
+
     /**
      * Clears the screen using the `system` command.
      */
@@ -158,6 +171,7 @@ namespace Display {
     DString displayGrid<std::string>(const std::vector<std::vector<std::string>> &grid, bool show_grid);
     template<>
     DString displayGrid<DString>(const std::vector<std::vector<DString>> &grid, bool show_grid);
+
     /**
      * Like `displayGrid` but also takes a closure to convert the type to a DString.
      * @tparam T compatible types to `to_string`, `string`, and `DString`
@@ -170,6 +184,6 @@ namespace Display {
     DString displayGridConvert(const std::vector<std::vector<T>> &grid, std::function<DString(T)> convert, bool show_grid = true);
 }// namespace Display
 
-#include "display.tpp"
+#include "../../src/display.tpp"
 
 #endif// LIBDIO_DISPLAY_H
