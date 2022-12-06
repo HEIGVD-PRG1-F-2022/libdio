@@ -101,7 +101,7 @@ namespace Display {
         // the latter works in most unix terminals, but not MacOS.
 #ifdef __WIN32__
         *this += "\x1b[s";
-#elifdef __linux__
+#elif __linux__
         *this += "\x1b"
                  "7";
 #endif
@@ -113,7 +113,7 @@ namespace Display {
 // the latter works in most unix terminals, but not MacOS.
 #ifdef __WIN32__
         *this += "\x1b[u";
-#elifdef __linux__
+#elif __linux__
         *this += "\x1b"
                  "8";
 #endif
