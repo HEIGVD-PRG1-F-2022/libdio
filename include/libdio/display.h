@@ -100,6 +100,9 @@ namespace Display {
          */
         DString &reset(Color color = Color::WHITE);
 
+        /// Resets the text color.
+        DString &resetColor();
+
         /**
          * Saves the current cursor position.
          * @return a reference to the DString for chaining.
