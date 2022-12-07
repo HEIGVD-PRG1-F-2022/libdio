@@ -1,0 +1,16 @@
+name: Update tags
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  warning-check:
+    name: Comparing and creating tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Tagging
+        run: make tag
