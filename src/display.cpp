@@ -96,6 +96,10 @@ namespace Display {
         return *this;
     }
 
+    DString &DString::resetColor() {
+        return *this << "\x1b[0m";
+    }
+
     DString &DString::saveCursorPosition() {
         // While the first is the official ANSI code for saving the cursor position,
         // the latter works in most unix terminals, but not MacOS.

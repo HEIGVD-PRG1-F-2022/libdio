@@ -1,9 +1,9 @@
-name: clang-format Check
+name: Sanity Checks
 
 on: [ pull_request ]
 
 jobs:
-  warning-check:
+  warning:
     name: Warning Check
     runs-on: ubuntu-latest
     steps:
@@ -13,7 +13,7 @@ jobs:
           g++ -std=c++2a -Wall -Wextra -Wconversion -Wsign-conversion -pedantic \
             -I include/ -Werror src/*.cpp example/main.cpp
 
-  formatting-check:
+  formatting:
     name: Formatting Check
     runs-on: ubuntu-latest
     steps:
@@ -23,4 +23,11 @@ jobs:
         with:
           clang-format-version: '13'
           check-path: '.'
-#          fallback-style: 'Mozilla' # optional
+
+  tags:
+    name: Tags Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: check warnings
+        run: make check_tags
