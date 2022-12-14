@@ -41,6 +41,12 @@ namespace Display {
     // of many elements.
     class DString : public std::string {
     public:
+        enum class LineDelete {
+            TO_END = 0,
+            TO_BEGINNING = 1,
+            WHOLE = 2,
+        };
+
         explicit DString(const std::string &s);
 
         /**
@@ -73,6 +79,12 @@ namespace Display {
          * @return a reference to DString
          */
         DString &operator<<(const char obj[]);
+
+        /**
+         * Use DString as a stream
+         * @return a reference to DString
+         */
+        DString &operator<<(const char obj);
 
         /**
          * Use DString as a stream
@@ -120,6 +132,24 @@ namespace Display {
          * @return a reference to the DString for chaining.
          */
         DString &clearScreen();
+
+        /**
+         * Moves the cursor position to home.
+         */
+        DString &cursorHome();
+
+        /**
+          * Sets the visibility of the cursor
+          * @param visible
+          */
+        DString &cursorVisible(bool visible);
+
+        /**
+         * Deletes part or whole line
+         * @param part - TO_END: from cursor to end of line, TO_BEGIN: from cursor to beginning of line,
+         * WHOLE: whole line
+         */
+        DString &cursorDelete(LineDelete position);
 
         /**
          * Returns the maximum line-length of this string.

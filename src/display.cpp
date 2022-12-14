@@ -46,6 +46,8 @@ const string BOT_LEFT_PIPE = "╚";
 const string BOT_RIGHT_PIPE = "╝";
 const string CROSS_PIPE = "╬";
 
+const string CSI = "\x1b[";
+
 namespace Display {
 
     // Removes all ANSI sequences for counting characters.
@@ -63,7 +65,7 @@ namespace Display {
     }
 
     DString &DString::setColor(Color color) {
-        *this += "\x1b[38;5;" + to_string(int(color)) + "m";
+        *this += CSI + "38;5;" + to_string(int(color)) + "m";
         return *this;
     }
 
@@ -76,6 +78,10 @@ namespace Display {
         return *this;
     }
     DString &DString::operator<<(const char obj[]) {
+        *this += obj;
+        return *this;
+    }
+    DString &DString::operator<<(const char obj) {
         *this += obj;
         return *this;
     }
@@ -97,14 +103,14 @@ namespace Display {
     }
 
     DString &DString::resetColor() {
-        return *this << "\x1b[0m";
+        return *this << CSI + "0m";
     }
 
     DString &DString::saveCursorPosition() {
         // While the first is the official ANSI code for saving the cursor position,
         // the latter works in most unix terminals, but not MacOS.
 #ifdef __WIN32__
-        *this += "\x1b[s";
+        *this += CSI + "s";
 #elif __linux__
         *this += "\x1b"
                  "7";
@@ -116,7 +122,7 @@ namespace Display {
 // While the first is the official ANSI code for saving the cursor position,
 // the latter works in most unix terminals, but not MacOS.
 #ifdef __WIN32__
-        *this += "\x1b[u";
+        *this += CSI + "u";
 #elif __linux__
         *this += "\x1b"
                  "8";
@@ -125,7 +131,22 @@ namespace Display {
     }
 
     DString &DString::clearScreen() {
-        *this += "\x1b[2J\x1b[H";
+        *this += CSI + "2J" + CSI + "H";
+        return *this;
+    }
+
+    DString &DString::cursorHome() {
+        *this += CSI + "H";
+        return *this;
+    }
+
+    DString &DString::cursorVisible(bool visible) {
+        *this += CSI + "?25"s + (visible ? "h" : "l");
+        return *this;
+    }
+
+    DString &DString::cursorDelete(LineDelete position) {
+        *this += CSI + to_string(int(position)) + "K";
         return *this;
     }
 
