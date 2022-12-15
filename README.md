@@ -11,7 +11,7 @@ include(FetchContent) # once in the project to include the module
 
 FetchContent_Declare(libdio
         GIT_REPOSITORY https://github.com/HEIGVD-PRG1-F-2022/libdio.git
-        GIT_TAG v0.2.2
+        GIT_TAG v0.2.3
         )
 FetchContent_MakeAvailable(libdio)
 
@@ -27,6 +27,23 @@ Now you can do the following to include the library in your files:
 #include <libdio/display.h>
 #include <libdio/input.h>
 ```
+
+## Changelog
+
+2022-12-14 - 0.2.3
+  * adds `cursorHome`, `cursorVisible`, and `cursorDelete` to `DString`
+  * adds `cursor{Back,Forward,Up,Down,Position,{Next,Previous}Line,HorizontalAbsolute}`
+  * overloads `append` to return a reference to `DString`
+  * refactoring CSI string
+  * adds `<<(char)`
+  * move `CHANGELOG.md` to `README.md`
+
+2022-11-30 - v0.2
+  * Rewrite of display
+
+2022-11-23 - v0.1
+  * Initial commit
+  * Made by Florian Duruz and Aellen Quentin for the course PRG1-f at HEIG/VD - https://heig-vd.ch/
 
 ## Examples
 

@@ -32,6 +32,18 @@ int main() {
     display << "HAL 2000\n";
     cout << display;
 
+    cout << Display::DString()
+                    .cursorHorizontalAbsolute(8)
+                    .append("Tab at 8")
+                    .cursorDown()
+                    .cursorBack(4)
+                    .append("Below to the left")
+                    .cursorNextLine(2)
+                    .append("Down and a text that will be deleted")
+                    .cursorHorizontalAbsolute(1)
+                    .cursorForward(4)
+                    .cursorDelete(Display::DString::LineDelete::TO_END)
+         << endl;
     vector<vector<string>> grid(3, vector<string>(3, "0"));
     cout << Display::displayGrid(grid, false);
 

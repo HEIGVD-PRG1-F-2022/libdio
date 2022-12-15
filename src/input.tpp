@@ -7,9 +7,7 @@ T userInputRange(const std::string &msg, T min, T max, const std::string &bad_ra
     T val;
     while (true) {
         val = userInput<T>(msg, err);
-        if (val >= min && val <= max) {
-            return val;
-        }
+        if (val >= min && val <= max) { return val; }
         std::cout << bad_range << std::endl;
     }
 }

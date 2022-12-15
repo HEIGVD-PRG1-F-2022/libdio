@@ -19,9 +19,7 @@ int enableVirtualTerminalProcessing() {
         DWORD mode = 0;
         if (GetConsoleMode(stdOut, &mode)) {
             mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-            if (SetConsoleMode(stdOut, mode)) {
-                return 0;
-            }
+            if (SetConsoleMode(stdOut, mode)) { return 0; }
         }
     }
 
@@ -46,6 +44,8 @@ const string BOT_LEFT_PIPE = "╚";
 const string BOT_RIGHT_PIPE = "╝";
 const string CROSS_PIPE = "╬";
 
+const string CSI = "\x1b[";
+
 namespace Display {
 
     // Removes all ANSI sequences for counting characters.
@@ -54,16 +54,12 @@ namespace Display {
     // Splits a string along the 'sep' string in as many pieces as possible.
     vector<string> split(const string &s, const string &sep);
 
-    DString::DString(const std::string &s) {
-        this->assign(s);
-    }
+    DString::DString(const std::string &s) { this->assign(s); }
 
-    DString::DString(Display::Color c) {
-        setColor(c);
-    }
+    DString::DString(Display::Color c) { setColor(c); }
 
     DString &DString::setColor(Color color) {
-        *this += "\x1b[38;5;" + to_string(int(color)) + "m";
+        *this += CSI + "38;5;" + to_string(int(color)) + "m";
         return *this;
     }
 
@@ -76,6 +72,10 @@ namespace Display {
         return *this;
     }
     DString &DString::operator<<(const char obj[]) {
+        *this += obj;
+        return *this;
+    }
+    DString &DString::operator<<(const char obj) {
         *this += obj;
         return *this;
     }
@@ -96,15 +96,13 @@ namespace Display {
         return *this;
     }
 
-    DString &DString::resetColor() {
-        return *this << "\x1b[0m";
-    }
+    DString &DString::resetColor() { return *this << CSI + "0m"; }
 
     DString &DString::saveCursorPosition() {
         // While the first is the official ANSI code for saving the cursor position,
         // the latter works in most unix terminals, but not MacOS.
 #ifdef __WIN32__
-        *this += "\x1b[s";
+        *this += CSI + "s";
 #elif __linux__
         *this += "\x1b"
                  "7";
@@ -113,10 +111,10 @@ namespace Display {
     }
 
     DString &DString::goBackToCursorPosition() {
-// While the first is the official ANSI code for saving the cursor position,
+// While the first is the official ANSI code for restoring the cursor position,
 // the latter works in most unix terminals, but not MacOS.
 #ifdef __WIN32__
-        *this += "\x1b[u";
+        *this += CSI + "u";
 #elif __linux__
         *this += "\x1b"
                  "8";
@@ -125,15 +123,53 @@ namespace Display {
     }
 
     DString &DString::clearScreen() {
-        *this += "\x1b[2J\x1b[H";
+        *this += CSI + "2J" + CSI + "H";
         return *this;
     }
 
+    DString &DString::cursorHome() {
+        *this += CSI + "H";
+        return *this;
+    }
+
+    DString &DString::cursorVisible(bool visible) {
+        *this += CSI + "?25"s + (visible ? "h" : "l");
+        return *this;
+    }
+
+    DString &DString::cursorDelete(LineDelete position) {
+        *this += CSI + to_string(int(position)) + "K";
+        return *this;
+    }
+
+    DString &DString::cursorMove(size_t steps, char dir) {
+        *this += CSI + (steps != 1 ? to_string(int(steps)) : "") + dir;
+        return *this;
+    }
+
+    DString &DString::cursorUp(size_t lines) { return cursorMove(lines, 'A'); }
+
+    DString &DString::cursorDown(size_t lines) { return cursorMove(lines, 'B'); }
+
+    DString &DString::cursorForward(size_t columns) { return cursorMove(columns, 'C'); }
+
+    DString &DString::cursorBack(size_t columns) { return cursorMove(columns, 'D'); }
+
+    DString &DString::cursorNextLine(size_t lines) { return cursorMove(lines, 'E'); }
+
+    DString &DString::cursorPreviousLine(size_t lines) { return cursorMove(lines, 'F'); }
+
+    DString &DString::cursorHorizontalAbsolute(size_t column) { return cursorMove(column, 'G'); }
+
+    DString &DString::cursorPosition(size_t x, size_t y) {
+        *this += CSI + (y != 1 ? to_string(int(y)) : "") + ";" + (x != 1 ? to_string(int(x)) : "") + "H";
+        return *this;
+    }
+
+
     size_t DString::max_width() {
         size_t max_width = 0;
-        for (const auto &line: split(*this, "\n")) {
-            max_width = max(max_width, nonANSI(line).size());
-        }
+        for (const auto &line: split(*this, "\n")) { max_width = max(max_width, nonANSI(line).size()); }
         return max_width;
     }
 
@@ -154,9 +190,7 @@ namespace Display {
     }
 
     // Returns the string without any ANSI sequences
-    string nonANSI(const string &s) {
-        return regex_replace(s, regex("\x1b.*?[a-zA-Z]"), "");
-    }
+    string nonANSI(const string &s) { return regex_replace(s, regex("\x1b.*?[a-zA-Z]"), ""); }
 
     void init() {
 #ifdef _WIN32
@@ -173,27 +207,17 @@ namespace Display {
 #endif
     }
 
-    void saveCursorPosition() {
-        DString().saveCursorPosition().print();
-    }
+    void saveCursorPosition() { DString().saveCursorPosition().print(); }
 
-    void restoreCursorPosition() {
-        DString().goBackToCursorPosition().print();
-    }
+    void restoreCursorPosition() { DString().goBackToCursorPosition().print(); }
 
-    void clearScreen() {
-        DString().clearScreen().print();
-    }
+    void clearScreen() { DString().clearScreen().print(); }
 
     string drawFrame(string first, const string &middle, const string &last, const string &space, size_t cells, size_t width) {
         string line = move(first);
         string spaces;
-        for (size_t i = 0; i <= width + 1; i++) {
-            spaces += space;
-        }
-        for (size_t i = 1; i < cells; i++) {
-            line += spaces + middle;
-        }
+        for (size_t i = 0; i <= width + 1; i++) { spaces += space; }
+        for (size_t i = 1; i < cells; i++) { line += spaces + middle; }
         return line + spaces + last;
     }
 
@@ -222,40 +246,26 @@ namespace Display {
 
         DString out;
 
-        if (show_grid) {
-            out << drawTopFrame(cells, max_width) + "\n";
-        }
+        if (show_grid) { out << drawTopFrame(cells, max_width) + "\n"; }
 
         for (size_t y = 0; y < grid.size(); ++y) {
             if (show_grid) {
-                if (y != 0) {
-                    out << drawInBetween(cells, max_width) + "\n";
-                }
+                if (y != 0) { out << drawInBetween(cells, max_width) + "\n"; }
                 out << Color::WHITE << VERTICAL_PIPE << " ";
             }
             for (size_t x = 0; x < grid.at(0).size(); ++x) {
                 DString cell = grid.at(y).at(x);
-                while (cell.count_lines() < max_height) {
-                    cell << "\n";
-                }
-                while (cell.max_width() < max_width) {
-                    cell << " ";
-                }
+                while (cell.count_lines() < max_height) { cell << "\n"; }
+                while (cell.max_width() < max_width) { cell << " "; }
                 out << cell;
 
                 out << " ";
-                if (show_grid && x != grid.at(0).size() - 1) {
-                    out << Color::WHITE << VERTICAL_PIPE << " ";
-                }
+                if (show_grid && x != grid.at(0).size() - 1) { out << Color::WHITE << VERTICAL_PIPE << " "; }
             }
-            if (show_grid) {
-                out << Color::WHITE << VERTICAL_PIPE;
-            }
+            if (show_grid) { out << Color::WHITE << VERTICAL_PIPE; }
             out << "\n";
         }
-        if (show_grid) {
-            out << drawBottomFrame(cells, max_width) + "\n";
-        }
+        if (show_grid) { out << drawBottomFrame(cells, max_width) + "\n"; }
         return out;
     }
 
