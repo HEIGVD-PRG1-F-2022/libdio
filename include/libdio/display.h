@@ -18,17 +18,7 @@ namespace Display {
     /**
      * Common colors to be used.
      */
-    enum class Color {
-        WHITE = 15,
-        YELLOW = 226,
-        ORANGE = 214,
-        RED = 196,
-        AQUA = 122,
-        PINK = 207,
-        GREEN = 40,
-        BLUE = 21,
-        BLACK = 16
-    };
+    enum class Color { WHITE = 15, YELLOW = 226, ORANGE = 214, RED = 196, AQUA = 122, PINK = 207, GREEN = 40, BLUE = 21, BLACK = 16 };
 
     // DString represents a colored string. Upon creation, it is initialised with
     // a white text color.
@@ -40,6 +30,8 @@ namespace Display {
     // This allows for a much faster output, specifically if you create a string out
     // of many elements.
     class DString : public std::string {
+        DString &cursorMove(size_t steps, char dir);
+
     public:
         enum class LineDelete {
             TO_END = 0,
@@ -54,6 +46,9 @@ namespace Display {
          * @param c the color of the string.
          */
         explicit DString(Color c = Color::WHITE);
+
+        template<typename T>
+        DString &append(T a);
 
         /**
          * Sets the color for all following text.
@@ -135,12 +130,14 @@ namespace Display {
 
         /**
          * Moves the cursor position to home.
+         * @return a reference to the DString for chaining.
          */
         DString &cursorHome();
 
         /**
           * Sets the visibility of the cursor
           * @param visible
+          * @return a reference to the DString for chaining.
           */
         DString &cursorVisible(bool visible);
 
@@ -148,8 +145,75 @@ namespace Display {
          * Deletes part or whole line
          * @param part - TO_END: from cursor to end of line, TO_BEGIN: from cursor to beginning of line,
          * WHOLE: whole line
+         * @return a reference to the DString for chaining.
          */
         DString &cursorDelete(LineDelete position);
+
+        /**
+         * Moves the cursor up by n lines. If it is at the edge of the screen,
+         * it has no effect.
+         * @param lines = 1
+         * @return a reference to the DString for chaining.
+         */
+        DString &cursorUp(size_t lines = 1);
+
+        /**
+         * Moves the cursor down by n lines. If it is at the edge of the screen,
+         * it has no effect.
+         * @param lines = 1
+         * @return a reference to the DString for chaining.
+         */
+        DString &cursorDown(size_t lines = 1);
+
+        /**
+         * Moves the cursor left by n characters. If it is at the edge of the screen,
+         * it has no effect.
+         * @param columns = 1
+         * @return a reference to the DString for chaining.
+         */
+        DString &cursorForward(size_t columns = 1);
+
+        /**
+         * Moves the cursor right by n characters. If it is at the edge of the screen,
+         * it has no effect.
+         * @param columns = 1
+         * @return a reference to the DString for chaining.
+         */
+        DString &cursorBack(size_t columns = 1);
+
+        /**
+         * Moves the cursor to the beginning of the next line n. If it is at the edge of the screen,
+         * it has no effect.
+         * @param lines = 1
+         * @return a reference to the DString for chaining.
+         */
+        DString &cursorNextLine(size_t lines = 1);
+
+        /**
+         * Moves the cursor to the beginning of the previous line n. If it is at the edge of the screen,
+         * it has no effect.
+         * @param lines = 1
+         * @return a reference to the DString for chaining.
+         */
+        DString &cursorPreviousLine(size_t lines = 1);
+
+        /**
+         * Moves the cursor to the column n of the current line. If it is at the edge of the screen,
+         * it has no effect.
+         * @param column = 1
+         * @return a reference to the DString for chaining.
+         */
+        DString &cursorHorizontalAbsolute(size_t column);
+
+        /**
+         * Moves the cursor to the given position of the screen. If the position is off-screen,
+         * it will stay at the edge. The positions are 1-based, meaning that the upper-left corner
+         * is at (1, 1).
+         * @param x = 1
+         * @param y = 1
+         * @return a reference to the DString for chaining.
+         */
+        DString &cursorPosition(size_t x = 1, size_t y = 1);
 
         /**
          * Returns the maximum line-length of this string.

@@ -32,6 +32,8 @@ Now you can do the following to include the library in your files:
 
 2022-12-14 - 0.2.3
   * adds `cursorHome`, `cursorVisible`, and `cursorDelete` to `DString`
+  * adds `cursor{Back,Forward,Up,Down,Position,{Next,Previous}Line,HorizontalAbsolute}`
+  * overloads `append` to return a reference to `DString`
   * refactoring CSI string
   * adds `<<(char)`
   * move `CHANGELOG.md` to `README.md`
