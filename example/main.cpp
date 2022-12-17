@@ -27,10 +27,12 @@ int main() {
     Display::restoreCursorPosition();
     display.setColor(Display::Color::RED);
     display << "Goodbye world!\nThis is red\n";
-    display.print();
 
     display << "HAL 2000\n";
     cout << display;
+
+    cout << "I'im red"_red << endl;
+    cout << "I'im green"_green << endl;
 
     cout << Display::DString()
                     .cursorHorizontalAbsolute(8)

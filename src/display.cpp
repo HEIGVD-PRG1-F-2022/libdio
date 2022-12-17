@@ -275,3 +275,53 @@ namespace Display {
                 grid, [](const string &val) -> DString { return DString() << val; }, show_grid);
     }
 }// namespace Display
+
+std::ostream& operator<<(std::ostream& os, Display::DString &s) {
+    os << (std::string)s;
+    s.clear();
+    return os;
+}
+
+
+Display::DString getDStringColored(const char* s, size_t len, Display::Color color) {
+    Display::DString d;
+    d.setColor(color);
+    d.append(s);
+    return d;
+}
+
+Display::DString operator "" _white(const char *s, size_t len) {
+    return getDStringColored(s, len, Display::Color::WHITE);
+}
+
+Display::DString operator "" _yellow(const char *s, size_t len) {
+    return getDStringColored(s, len, Display::Color::YELLOW);
+}
+
+Display::DString operator "" _orange(const char *s, size_t len) {
+    return getDStringColored(s, len, Display::Color::ORANGE);
+}
+
+Display::DString operator "" _red(const char* s, size_t len) {
+    return getDStringColored(s, len, Display::Color::RED);
+}
+
+Display::DString operator "" _aqua(const char *s, size_t len) {
+    return getDStringColored(s, len, Display::Color::AQUA);
+}
+
+Display::DString operator "" _pink(const char *s, size_t len) {
+    return getDStringColored(s, len, Display::Color::PINK);
+}
+
+Display::DString operator "" _green(const char *s, size_t len) {
+    return getDStringColored(s, len, Display::Color::GREEN);
+}
+
+Display::DString operator "" _blue(const char *s, size_t len) {
+    return getDStringColored(s, len, Display::Color::BLUE);
+}
+
+Display::DString operator "" _black(const char *s, size_t len) {
+    return getDStringColored(s, len, Display::Color::BLACK);
+}
