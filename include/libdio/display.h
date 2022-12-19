@@ -282,15 +282,15 @@ namespace Display {
 }// namespace Display
 
 // User-defined literals
-Display::DString operator "" _white(const char *s, size_t len);
-Display::DString operator "" _yellow(const char *s, size_t len);
-Display::DString operator "" _orange(const char *s, size_t len);
-Display::DString operator "" _red(const char *s, size_t len);
-Display::DString operator "" _aqua(const char *s, size_t len);
-Display::DString operator "" _pink(const char *s, size_t len);
-Display::DString operator "" _green(const char *s, size_t len);
-Display::DString operator "" _blue(const char *s, size_t len);
-Display::DString operator "" _black(const char *s, size_t len);
+Display::DString operator"" _white(const char *s, size_t len);
+Display::DString operator"" _yellow(const char *s, size_t len);
+Display::DString operator"" _orange(const char *s, size_t len);
+Display::DString operator"" _red(const char *s, size_t len);
+Display::DString operator"" _aqua(const char *s, size_t len);
+Display::DString operator"" _pink(const char *s, size_t len);
+Display::DString operator"" _green(const char *s, size_t len);
+Display::DString operator"" _blue(const char *s, size_t len);
+Display::DString operator"" _black(const char *s, size_t len);
 
 #include "../../src/display.tpp"
 
