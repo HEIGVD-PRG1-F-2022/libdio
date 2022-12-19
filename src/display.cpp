@@ -279,7 +279,7 @@ namespace Display {
 Display::DString getDStringColored(const char *s, size_t len, Display::Color color) {
     Display::DString d;
     d.setColor(color);
-    d.append(s);
+    d.append(string(s, s + len));
     return d;
 }
 
