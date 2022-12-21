@@ -15,7 +15,9 @@ int main() {
     display << "Test\n";
     display.print();
 
-    display.setColor(Display::Color::GREEN) << "In green\n";
+    display.setColor(Display::Color::GREEN) << "In green\n"
+                                            << "In red"_red
+                                            << "In yellow"_yellow;
     display.print();
 
     Display::saveCursorPosition();

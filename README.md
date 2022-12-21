@@ -30,6 +30,9 @@ Now you can do the following to include the library in your files:
 
 ## Changelog
 
+2022-12-20 - 0.2.4
+  * adds custom litterals, so you can now add strings like `"This is red"_red`
+
 2022-12-14 - 0.2.3
   * adds `cursorHome`, `cursorVisible`, and `cursorDelete` to `DString`
   * adds `cursor{Back,Forward,Up,Down,Position,{Next,Previous}Line,HorizontalAbsolute}`
