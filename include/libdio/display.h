@@ -219,13 +219,13 @@ namespace Display {
          * Returns the maximum line-length of this string.
          * @return the longest line of this string without the ANSI codes
          */
-        size_t max_width();
+        size_t max_width() const;
 
         /**
          * Returns the number of lines in this string
          * @return number of lines
          */
-        size_t count_lines();
+        size_t count_lines() const;
     };
 
     /**
