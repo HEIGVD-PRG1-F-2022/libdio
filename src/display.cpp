@@ -167,13 +167,13 @@ namespace Display {
     }
 
 
-    size_t DString::max_width() {
+    size_t DString::max_width() const {
         size_t max_width = 0;
         for (const auto &line: split(*this, "\n")) { max_width = max(max_width, nonANSI(line).size()); }
         return max_width;
     }
 
-    size_t DString::count_lines() {
+    size_t DString::count_lines() const {
         return size_t(std::count_if(begin(), end(), [](char c) -> bool { return c == '\n'; }));
     }
 
@@ -237,7 +237,7 @@ namespace Display {
     DString displayGrid<DString>(const vector<vector<DString>> &grid, bool show_grid) {
         size_t max_width = 0, max_height = 0;
         for (const auto &line: grid) {
-            for (auto cell: line) {
+            for (const auto &cell: line) {
                 max_width = max(max_width, cell.max_width());
                 max_height = max(max_height, cell.count_lines());
             }
@@ -254,17 +254,15 @@ namespace Display {
                 out << Color::WHITE << VERTICAL_PIPE << " ";
             }
             for (size_t x = 0; x < grid.at(0).size(); ++x) {
-                DString cell = grid.at(y).at(x);
-                while (cell.count_lines() < max_height) { cell << "\n"; }
-                while (cell.max_width() < max_width) { cell << " "; }
-                out << cell;
-
-                out << " ";
+                const DString &cell = grid.at(y).at(x);
+                string filler(max_width - cell.max_width() + 1, ' ');
+                out << cell << filler;
                 if (show_grid && x != grid.at(0).size() - 1) { out << Color::WHITE << VERTICAL_PIPE << " "; }
             }
             if (show_grid) { out << Color::WHITE << VERTICAL_PIPE; }
             out << "\n";
         }
+
         if (show_grid) { out << drawBottomFrame(cells, max_width) + "\n"; }
         return out;
     }

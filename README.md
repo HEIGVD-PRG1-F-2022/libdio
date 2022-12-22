@@ -11,7 +11,7 @@ include(FetchContent) # once in the project to include the module
 
 FetchContent_Declare(libdio
         GIT_REPOSITORY https://github.com/HEIGVD-PRG1-F-2022/libdio.git
-        GIT_TAG v0.2.4
+        GIT_TAG v0.2.5
         )
 FetchContent_MakeAvailable(libdio)
 
@@ -29,6 +29,9 @@ Now you can do the following to include the library in your files:
 ```
 
 ## Changelog
+
+2022-12-22 - 0.2.5
+  * Speeding up `showGrid`
 
 2022-12-20 - 0.2.4
   * adds custom litterals, so you can now add strings like `"This is red"_red`
